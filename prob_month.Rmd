@@ -14,53 +14,36 @@ The answers are that $Y$ is a continous random variable and that it can take on 
 The problem does not ask students to find probabilities involving $Y$. To do so would require calculating integrals or otherwise being very clever.  But if he teaches his students R he may be able to ask them to approximate probabilites like $P(0 < Y <9)$ by using Monte Carlo methods.
 
 
-```{r}
-# this generates a random point on a circle of radius 9 inches
-throw_dart <- function() {
-    
-  x = runif(1, min=-9, max=9) # generate a random x-coordinate
-  y = runif(1, min=-9, max=9) # generate a random y-coordinate
 
-  # check to see if the point is in the circle
-  if (x^2 + y^2 <= 81){    
-    return(c(x, y))  
-  }
-  # if point generated is not in the circle, try again
-  else {
-    return(throw_dart())
-  }
-}
-
+```{r include=FALSE}
 calculate_Y <- function(x,y) {
   centerX = 0
   centerY = 9
   Y = sqrt((x - centerX)^2 + (y -centerY)^2)
   return(Y)
 }
+    
+throws = 100000
 
-random_Y <- function() {
-  z = throw_dart()
-  return(calculate_Y(z[1], z[2]))
-}
+xs = runif(throws, min=-9, max=9) # generate random x-coordinates
+ys = runif(throws, min=-9, max=9) # generate random y-coordinates
 
-large_sample <- replicate(10000, random_Y())
-mean(large_sample > 17.5) 
+in.circle <- xs^2 + ys^2 <= 81  # check to see if they're in circle
 
+# discard points outside the circle
+xs <- xs[in.circle]
+ys <- ys[in.circle]
 
+# find those points that give 
+condition <- calculate_Y(xs, ys) > 9 
+mean(condition)  # this gives the answer
+```
 
-plot_darts <- function(n){
-  plot(0, 0, xlim=c(-9,9), ylim=c(-9,9), pch = "", 
-    asp=1, main="The Dartboard")
-  for (i in 1:n){
-    z = throw_dart()
-    if (calculate_Y(z[1], z[2])<9) {
-      color = "red"
-    }
-    else{
-      color = "black"
-    }
-    points(z[1], z[2], col=color)
-  }
-}
-plot_darts(10000)
+```{r echo=FALSE, fig.height=6, fig.width=6}
+plot(xs, ys, xlim=c(-9,9), ylim=c(-9,9), 
+  asp=1,
+  pch = ".",
+  main = "The Dartboard",
+  xlab="", ylab="",
+  col=ifelse(condition,"black","blue"))
 ```
