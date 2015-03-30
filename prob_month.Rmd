@@ -11,8 +11,9 @@ To introduce random variables to his elementary statistics students, Mr. Garza g
 
 The answers are that $Y$ is a continous random variable and that it can take on any value between 0 and 18 inclusive.
 
-The problem does not ask students to find probabilities involving $Y$. To do so would require calculating integrals or otherwise being very clever.  But if he teaches his students R he may be able to ask them to approximate probabilites like $P(0 < Y <9)$ by using Monte Carlo methods.
+The problem does not ask students to find probabilities involving $Y$. To do so would require calculating integrals or otherwise be very clever.  But if he teaches his students R he may be able to ask them to approximate probabilites involving $Y$ by using [Monte Carlo methods](http://www.countbayesie.com/blog/2015/3/3/6-amazing-trick-with-monte-carlo-simulations).
 
+Thus, the problem posed is this: assuming that all points on the dartboard are equally likely to be hit with the dart, find $P(0< Y<9)$ using R or other software.
 
 
 ```{r include=FALSE}
