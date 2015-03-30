@@ -1,1 +1,1 @@
-This is a repository for the UTRGV R User's Group problem of the month.
+This is a repository for the UTRGV R Users Group problem of the month.
