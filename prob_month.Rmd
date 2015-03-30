@@ -1,0 +1,66 @@
+---
+title: "R Problem of the Month"
+date: March 27, 2015
+---
+
+
+# Introduction
+To introduce random variables to his elementary statistics students, Mr. Garza gives the following problem:
+
+> Suppose a person throws a dart and hits a circular board of radius 9 inches. Let $Y$ denote the distance in inches from the point of impact to the top center of the board. Is $Y$ a discrete or a continuous random variable? What values does the continuous random variable $Y$ take on?
+
+The answers are that $Y$ is a continous random variable and that it can take on any value between 0 and 18 inclusive.
+
+The problem does not ask students to find probabilities involving $Y$. To do so would require calculating integrals or otherwise being very clever.  But if he teaches his students R he may be able to ask them to approximate probabilites like $P(0 < Y <9)$ by using Monte Carlo methods.
+
+
+```{r}
+# this generates a random point on a circle of radius 9 inches
+throw_dart <- function() {
+    
+  x = runif(1, min=-9, max=9) # generate a random x-coordinate
+  y = runif(1, min=-9, max=9) # generate a random y-coordinate
+
+  # check to see if the point is in the circle
+  if (x^2 + y^2 <= 81){    
+    return(c(x, y))  
+  }
+  # if point generated is not in the circle, try again
+  else {
+    return(throw_dart())
+  }
+}
+
+calculate_Y <- function(x,y) {
+  centerX = 0
+  centerY = 9
+  Y = sqrt((x - centerX)^2 + (y -centerY)^2)
+  return(Y)
+}
+
+random_Y <- function() {
+  z = throw_dart()
+  return(calculate_Y(z[1], z[2]))
+}
+
+large_sample <- replicate(10000, random_Y())
+mean(large_sample > 17.5) 
+
+
+
+plot_darts <- function(n){
+  plot(0, 0, xlim=c(-9,9), ylim=c(-9,9), pch = "", 
+    asp=1, main="The Dartboard")
+  for (i in 1:n){
+    z = throw_dart()
+    if (calculate_Y(z[1], z[2])<9) {
+      color = "red"
+    }
+    else{
+      color = "black"
+    }
+    points(z[1], z[2], col=color)
+  }
+}
+plot_darts(10000)
+```
