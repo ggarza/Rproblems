@@ -24,7 +24,7 @@ calculate_Y <- function(x,y) {
   return(Y)
 }
     
-throws = 100000
+throws = 1000
 
 xs = runif(throws, min=-9, max=9) # generate random x-coordinates
 ys = runif(throws, min=-9, max=9) # generate random y-coordinates
@@ -43,8 +43,8 @@ mean(condition)  # this gives the answer
 ```{r echo=FALSE, fig.height=6, fig.width=6}
 plot(xs, ys, xlim=c(-9,9), ylim=c(-9,9), 
   asp=1,
-  pch = ".",
-  main = "The Dartboard",
+  pch = 4,
+  main = "The Dartboard with 1000 darts",
   xlab="", ylab="",
   col=ifelse(condition,"black","blue"))
 ```
